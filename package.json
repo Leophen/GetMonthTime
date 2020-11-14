@@ -1,0 +1,55 @@
+{
+  "name": "@leophen/bpage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Leophen",
+  "bundleDependencies": false,
+  "dependencies": {
+    "@vue/composition-api": "^1.0.0-beta.10",
+    "core-js": "^3.6.5",
+    "echarts": "^4.9.0",
+    "echarts-for-vue": "^1.0.1",
+    "element-ui": "^2.13.2",
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.2"
+  },
+  "deprecated": false,
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.5",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "^4.4.6",
+    "@vue/cli-plugin-typescript": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^5.0.2",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-component": "^1.1.1",
+    "babel-preset-es2015": "^6.24.1",
+    "eslint": "^6.7.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-prettier-vue": "^2.1.1",
+    "eslint-plugin-vue": "^6.2.2",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
+    "typescript": "~3.9.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.44.2"
+  },
+  "peerDependencies": {
+    "@vue/composition-api": "^1.0.0-beta.10",
+    "vue": "^2.6.11",
+    "element-ui": "^2.13.2"
+  },
+  "scripts": {
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve"
+  },
+  "license": "ISC"
+}

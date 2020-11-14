@@ -1,0 +1,39 @@
+{
+    "diffEditor.ignoreTrimWhitespace": false,
+    "files.autoSave": "off",
+    "explorer.confirmDelete": false,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "git.enableSmartCommit": true,
+    "explorer.confirmDragAndDrop": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "typescript.format.enable": false,
+    "javascript.format.enable": false,
+    "vetur.validation.template": false,
+    "vetur.format.options.tabSize": 2,
+    "vetur.format.options.useTabs": true,
+    "vetur.format.defaultFormatter.html": "none",
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript"
+    ],
+    "stylusSupremacy.insertNewLineAroundProperties": true,
+    // Insert or remove a colon between a property name and its value.
+    "stylusSupremacy.insertColons": false,
+    // Insert or remove a semi-colon after a property value, a variable declaration, a variable assignment and a mixin/function call.
+    "stylusSupremacy.insertSemicolons": false,
+    // Insert or remove a pair of curly braces where they are supposed to be. Note that this option does not affect @block construction, see alwaysUseAtBlock.
+    "stylusSupremacy.insertBraces": false,
+    // Insert or remove a white-space before a comment.
+    "stylusSupremacy.insertSpaceBeforeComment": true,
+    // Insert or remove a white-space after a comment.
+    "stylusSupremacy.insertSpaceAfterComment": false,
+    // Insert or remove a white-space after a comma.
+    "stylusSupremacy.insertSpaceAfterComma": true,
+}
