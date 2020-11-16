@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "@vue/composition-api";
+import { defineComponent } from "@vue/composition-api";
 import DayTime from "./DayTime.vue";
 
 export default defineComponent({
@@ -32,10 +32,6 @@ export default defineComponent({
 		},
 	},
 	setup(props, ctx) {
-		onMounted(() => {
-			props.dateData;
-		});
-
 		return {
 			props,
 			changeData(today: any, todayTime: any) {

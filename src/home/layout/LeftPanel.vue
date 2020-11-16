@@ -5,7 +5,7 @@
 		<header class="left-panel--header">
 			<div class="left-panel--header__inner">
 				<div class="left-panel--header__top">
-					11 月 14 日
+					{{ new Date().getMonth() + 1 }} 月 {{ new Date().getDate() }} 日
 				</div>
 				<div class="left-panel--header__bottom">
 					OFF OFF WORK
@@ -25,7 +25,10 @@
 			>
 				录入当前签退时间
 			</div>
-			<div class="left-panel--footer--button left-panel--footer--button__save">
+			<div
+				class="left-panel--footer--button left-panel--footer--button__save"
+				@mousedown="saveCompute"
+			>
 				保存并计算
 			</div>
 		</footer>
@@ -41,7 +44,7 @@ export default defineComponent({
 	components: {
 		DateTime,
 	},
-	setup() {
+	setup(props, ctx) {
 		const state = reactive({
 			allMoney: 1234567,
 		});
@@ -194,17 +197,31 @@ export default defineComponent({
 
 		function importToday() {
 			const today = new Date().getDate();
-			dateData.forEach((item) => {
-				if (item.day - 2 === today) {
-					console.log(item);
-					item.leaveHour = new Date().getHours();
-					item.leaveMin = new Date().getMinutes();
+			let currentIndex = -1;
+			dateData.forEach((item, index) => {
+				if (item.day === today) {
+					// item.leaveHour = new Date().getHours();
+					// item.leaveMin = new Date().getMinutes();
+					currentIndex = index;
 				}
 			});
+			if (currentIndex !== -1) {
+				// vue3 如何使用 vue.set/this.$set
+				// ctx.$set(dateData[currentIndex], "leaveHour", new Date().getHours());
+				// Vue.set(dateData[currentIndex], "leaveMin", new Date().getMinutes());
+			}
+			console.log(currentIndex);
+			alert("开发中");
 		}
 
 		function changeData(today: any, todayTime: any) {
 			console.log(today, todayTime);
+		}
+
+		function saveCompute() {
+			const worktime = JSON.stringify(dateData);
+			localStorage.setItem("worktime", worktime);
+			console.log(JSON.parse(localStorage.getItem("worktime") as string));
 		}
 
 		return {
@@ -212,6 +229,7 @@ export default defineComponent({
 			dateData,
 			importToday,
 			changeData,
+			saveCompute,
 		};
 	},
 });

@@ -264,6 +264,9 @@ export default defineComponent({
 .day-time--container__today
 	color #ffbe21
 
+	.day-time--day, .day-time--time
+		color #ffbe21
+
 .day-time__work-day
 	width 100%
 	height 100%
