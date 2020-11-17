@@ -13,7 +13,11 @@
 			</div>
 		</header>
 		<div class="charts-pillar--container">
-			<ChartsPillar />
+			<ChartsPillar
+				:x-data="state.xDataArr"
+				:left-data="state.leftData"
+				v-if="state.ifUpdate"
+			/>
 		</div>
 	</div>
 </template>
@@ -44,11 +48,20 @@ export default defineComponent({
 			type: Number,
 			default: 0,
 		},
+		workDayArr: {
+			type: Array,
+			default() {
+				[];
+			},
+		},
 	},
 	setup(props) {
 		const state = reactive({
 			aveLeaveHour: "0",
 			aveLeaveMin: "0",
+			xDataArr: [],
+			leftData: [],
+			ifUpdate: true,
 		});
 
 		function computeTime() {
@@ -74,6 +87,28 @@ export default defineComponent({
 				computeTime();
 			},
 			{ immediate: true }
+		);
+
+		watch(
+			() => props.workDayArr,
+			(val) => {
+				state.xDataArr = [];
+				state.leftData = [];
+				val.forEach((item) => {
+					(state.xDataArr as any).push(item.day + "号");
+				});
+				const hasWorkDayArr = val.filter((item) => {
+					return item.day < new Date().getDate();
+				});
+				hasWorkDayArr.forEach((item) => {
+					(state.leftData as any).push(item.allTime);
+				});
+				state.ifUpdate = false;
+				setTimeout(() => {
+					state.ifUpdate = true;
+				}, 10);
+			},
+			{ immediate: true, deep: true }
 		);
 
 		return {

@@ -8,99 +8,92 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, onMounted, reactive } from "@vue/composition-api";
 import echarts from "echarts";
 import { createComponent } from "echarts-for-vue";
 
-interface PropsItem {
-	name: string;
-}
-
-export default defineComponent<PropsItem>({
+export default defineComponent({
 	name: "ChartsPillar",
 	components: {
 		ECharts: createComponent({ echarts }),
 	},
 	props: {
-		name: {
-			type: String,
-			default: "name",
+		xData: {
+			type: Array,
+			default() {
+				return [
+					"1号",
+					"2号",
+					"3号",
+					"4号",
+					"5号",
+					"6号",
+					"7号",
+					"8号",
+					"9号",
+					"10号",
+					"11号",
+					"12号",
+					"13号",
+					"14号",
+					"15号",
+					"16号",
+					"17号",
+					"18号",
+					"19号",
+					"20号",
+				];
+			},
+		},
+		leftData: {
+			type: Array,
+			default() {
+				return [
+					10.8,
+					10.8,
+					10.8,
+					10.8,
+					10.8,
+					10.8,
+					10.8,
+					10.8,
+					10.8,
+					10.8,
+					10.8,
+				];
+			},
+		},
+		rightData: {
+			type: Array,
+			default() {
+				return [
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+					10.2,
+				];
+			},
 		},
 	},
 	setup(props) {
-		const currentData = {
-			xData: [
-				"1号",
-				"2号",
-				"3号",
-				"4号",
-				"5号",
-				"6号",
-				"7号",
-				"8号",
-				"9号",
-				"10号",
-				"11号",
-				"12号",
-				"13号",
-				"14号",
-				"15号",
-				"16号",
-				"17号",
-				"18号",
-				"19号",
-				"20号",
-			],
-			leftData: [
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-				10.8,
-			],
-			rightData: [
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-				10.2,
-			],
-		};
-
 		const option = {
 			// 整体布局
 			grid: {
@@ -154,7 +147,7 @@ export default defineComponent<PropsItem>({
 			xAxis: [
 				{
 					type: "category",
-					data: currentData.xData,
+					data: props.xData,
 					axisLabel: {
 						//坐标轴刻度标签的相关设置。
 						margin: 15,
@@ -217,7 +210,7 @@ export default defineComponent<PropsItem>({
 				{
 					name: "实际时长",
 					type: "bar",
-					data: currentData.leftData,
+					data: props.leftData,
 					barWidth: 15,
 					barGap: 0, //柱间距离
 					itemStyle: {
@@ -241,7 +234,7 @@ export default defineComponent<PropsItem>({
 				{
 					name: "A级时长",
 					type: "bar",
-					data: currentData.rightData,
+					data: props.rightData,
 					barWidth: 15,
 					barGap: 0.2, //柱间距离
 					itemStyle: {

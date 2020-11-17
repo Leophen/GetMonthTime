@@ -8,6 +8,7 @@
 			:all-time="state.allTime"
 			:to-a-hour="state.toAHour"
 			:to-a-every-day-hour="state.toAEveryDayHour"
+			:work-day-arr="state.workDayArr"
 		/>
 	</div>
 </template>

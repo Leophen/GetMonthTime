@@ -17,6 +17,7 @@
 					class="day-time--input"
 					onfocus="this.select()"
 					v-model="state.time_come_hour"
+					@blur="inputBlur"
 				>
 				<div class="day-time--o">
 					:
@@ -26,6 +27,7 @@
 					class="day-time--input"
 					onfocus="this.select()"
 					v-model="state.time_come_min"
+					@blur="inputBlur"
 				>
 			</div>
 			<!-- 签退时间 -->
@@ -35,6 +37,7 @@
 					class="day-time--input"
 					onfocus="this.select()"
 					v-model="state.time_leave_hour"
+					@blur="inputBlur"
 				>
 				<div class="day-time--o">
 					:
@@ -44,6 +47,7 @@
 					class="day-time--input"
 					onfocus="this.select()"
 					v-model="state.time_leave_min"
+					@blur="inputBlur"
 				>
 			</div>
 			<div class="day-time--time">
@@ -119,6 +123,7 @@ export default defineComponent({
 			allTime: "0",
 			ifToday: false,
 			ifTomorrow: false,
+			needUpdate: false,
 		});
 
 		function computeTime() {
@@ -224,16 +229,7 @@ export default defineComponent({
 				if (Number(newVal) > 24) {
 					state.time_come_hour = "24";
 				}
-				computeTime();
-				ctx.emit(
-					"change",
-					props.index,
-					state.time_come_hour,
-					state.time_come_min,
-					state.time_leave_hour,
-					state.time_leave_min,
-					state.allTime
-				);
+				state.needUpdate = true;
 			}
 		);
 
@@ -249,16 +245,7 @@ export default defineComponent({
 				if (Number(newVal) > 24) {
 					state.time_leave_hour = "24";
 				}
-				computeTime();
-				ctx.emit(
-					"change",
-					props.index,
-					state.time_come_hour,
-					state.time_come_min,
-					state.time_leave_hour,
-					state.time_leave_min,
-					state.allTime
-				);
+				state.needUpdate = true;
 			}
 		);
 
@@ -277,16 +264,7 @@ export default defineComponent({
 				if (Number(newVal) > 59) {
 					state.time_come_min = "59";
 				}
-				computeTime();
-				ctx.emit(
-					"change",
-					props.index,
-					state.time_come_hour,
-					state.time_come_min,
-					state.time_leave_hour,
-					state.time_leave_min,
-					state.allTime
-				);
+				state.needUpdate = true;
 			}
 		);
 
@@ -305,6 +283,12 @@ export default defineComponent({
 				if (Number(newVal) > 59) {
 					state.time_leave_min = "59";
 				}
+				state.needUpdate = true;
+			}
+		);
+
+		function inputBlur() {
+			if (state.needUpdate) {
 				computeTime();
 				ctx.emit(
 					"change",
@@ -316,12 +300,14 @@ export default defineComponent({
 					state.allTime
 				);
 			}
-		);
+			state.needUpdate = false;
+		}
 
 		return {
 			props,
 			state,
 			computeTime,
+			inputBlur,
 		};
 	},
 });
