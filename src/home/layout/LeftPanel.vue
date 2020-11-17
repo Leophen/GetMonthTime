@@ -220,8 +220,8 @@ export default defineComponent({
 			}
 		}
 
-		function changeData(today: any, todayTime: any) {
-			console.log(today, todayTime);
+		function changeData(index: any, todayTime: any) {
+			ctx.root.$set(dateData[index], "allTime", todayTime);
 		}
 
 		function saveCompute() {

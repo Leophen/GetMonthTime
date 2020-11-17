@@ -5,8 +5,11 @@
 		<DayTime
 			v-for="(item,index) in props.dateData"
 			:key="item+index"
+			:index="index"
 			:day="item.day"
 			:rest-day="item.restDay"
+			:come-hour="item.comeHour"
+			:come-min="item.comeMin"
 			:leave-hour="item.leaveHour"
 			:leave-min="item.leaveMin"
 			@change="changeData"
@@ -34,8 +37,8 @@ export default defineComponent({
 	setup(props, ctx) {
 		return {
 			props,
-			changeData(today: any, todayTime: any) {
-				ctx.emit("change", today, todayTime);
+			changeData(index: any, todayTime: any) {
+				ctx.emit("change", index, todayTime);
 			},
 		};
 	},

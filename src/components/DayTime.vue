@@ -76,6 +76,10 @@ import {
 export default defineComponent({
 	name: "DayTime",
 	props: {
+		index: {
+			type: Number,
+			default: -1,
+		},
 		day: {
 			type: Number,
 			default: -1,
@@ -83,6 +87,14 @@ export default defineComponent({
 		restDay: {
 			type: String,
 			default: "",
+		},
+		comeHour: {
+			type: Number,
+			default: 9,
+		},
+		comeMin: {
+			type: Number,
+			default: 0,
 		},
 		leaveHour: {
 			type: Number,
@@ -131,7 +143,14 @@ export default defineComponent({
 			if (props.day === today) {
 				state.ifToday = true;
 			}
+
 			if (props.restDay === "") {
+				state.time_come_hour = props.comeHour.toString();
+				if (props.comeMin === 0) {
+					state.time_come_min = "00";
+				} else {
+					state.time_come_min = props.comeMin.toString();
+				}
 				state.time_leave_hour = props.leaveHour.toString();
 				if (props.leaveMin === 0) {
 					state.time_leave_min = "00";
@@ -139,27 +158,9 @@ export default defineComponent({
 					state.time_leave_min = props.leaveMin.toString();
 				}
 				computeTime();
-				ctx.emit("change", props.day, state.allTime);
+				ctx.emit("change", props.index, state.allTime);
 			}
 		});
-
-		watch(
-			() => props.leaveHour,
-			(val) => {
-				console.log("props.leaveHour", val);
-				state.time_leave_hour = val.toString();
-				computeTime();
-			}
-		);
-
-		watch(
-			() => props.leaveMin,
-			(val) => {
-				console.log("props.leaveMin", val);
-				state.time_leave_min = val.toString();
-				computeTime();
-			}
-		);
 
 		watch(
 			() => state.time_come_hour,
@@ -174,10 +175,7 @@ export default defineComponent({
 					state.time_come_hour = "24";
 				}
 				computeTime();
-				ctx.emit("change", props.day, state.allTime);
-			},
-			{
-				immediate: true,
+				ctx.emit("change", props.index, state.allTime);
 			}
 		);
 
@@ -194,10 +192,7 @@ export default defineComponent({
 					state.time_leave_hour = "24";
 				}
 				computeTime();
-				ctx.emit("change", props.day, state.allTime);
-			},
-			{
-				immediate: true,
+				ctx.emit("change", props.index, state.allTime);
 			}
 		);
 
@@ -217,10 +212,7 @@ export default defineComponent({
 					state.time_come_min = "59";
 				}
 				computeTime();
-				ctx.emit("change", props.day, state.allTime);
-			},
-			{
-				immediate: true,
+				ctx.emit("change", props.index, state.allTime);
 			}
 		);
 
@@ -240,10 +232,7 @@ export default defineComponent({
 					state.time_leave_min = "59";
 				}
 				computeTime();
-				ctx.emit("change", props.day, state.allTime);
-			},
-			{
-				immediate: true,
+				ctx.emit("change", props.index, state.allTime);
 			}
 		);
 
