@@ -46,7 +46,7 @@ export default defineComponent({
 	},
 	setup(props, ctx) {
 		const state = reactive({
-			allMoney: 1234567,
+			allTimeArr: [],
 		});
 
 		// 筛选日期
@@ -207,11 +207,17 @@ export default defineComponent({
 			});
 			if (currentIndex !== -1) {
 				// vue3 如何使用 vue.set/this.$set
-				// ctx.$set(dateData[currentIndex], "leaveHour", new Date().getHours());
-				// Vue.set(dateData[currentIndex], "leaveMin", new Date().getMinutes());
+				ctx.root.$set(
+					dateData[currentIndex],
+					"leaveHour",
+					new Date().getHours()
+				);
+				ctx.root.$set(
+					dateData[currentIndex],
+					"leaveMin",
+					new Date().getMinutes()
+				);
 			}
-			console.log(currentIndex);
-			alert("开发中");
 		}
 
 		function changeData(today: any, todayTime: any) {
