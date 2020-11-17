@@ -5,10 +5,10 @@
 		<header class="right-panel--header">
 			<div class="right-panel--header__inner">
 				<div class="right-panel--header__top">
-					本月平均时长：<span class="right-panel--header__time">10.2 小时</span>
+					本月累计平均时长：<span class="right-panel--header__time">{{ props.aveTime }} 小时</span>
 				</div>
 				<div class="right-panel--header__bottom">
-					距离 A 级总时长还需：<span class="right-panel--header__time">28 小时（当月剩余日平均每天需达到 8.3 个小时）</span>
+					累计总时长：<span class="right-panel--header__time">{{ props.allTime.toFixed(2) }} 小时，距离 A 级还需：{{ props.toAHour.toFixed(2) }} 小时（从今天起每日平均需达到 {{ props.toAEveryDayHour.toFixed(2) }} 小时，相当于 9 点签到，{{ state.aveLeaveHour }}:{{ state.aveLeaveMin }} 点签退）</span>
 				</div>
 			</div>
 		</header>
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, watch, reactive } from "@vue/composition-api";
 import ChartsPillar from "../../components/echarts/ChartsPillar.vue";
 
 export default defineComponent({
@@ -27,8 +27,59 @@ export default defineComponent({
 	components: {
 		ChartsPillar,
 	},
-	setup() {
-		return {};
+	props: {
+		aveTime: {
+			type: Number,
+			default: 0,
+		},
+		allTime: {
+			type: Number,
+			default: 0,
+		},
+		toAHour: {
+			type: Number,
+			default: 0,
+		},
+		toAEveryDayHour: {
+			type: Number,
+			default: 0,
+		},
+	},
+	setup(props) {
+		const state = reactive({
+			aveLeaveHour: "0",
+			aveLeaveMin: "0",
+		});
+
+		function computeTime() {
+			let leaveTime = 9 + props.toAEveryDayHour;
+			if (leaveTime > 12 && leaveTime <= 18) {
+				leaveTime += 1.5;
+			} else if (leaveTime > 18 && leaveTime <= 18 + 40 / 60) {
+				leaveTime += 1.5 + 40 / 60;
+			}
+			const leaveTimeArr = leaveTime.toString().split(".");
+
+			state.aveLeaveHour = leaveTimeArr[0];
+			if (leaveTimeArr[1]) {
+				state.aveLeaveMin = (Number(0 + "." + leaveTimeArr[1]) * 60).toFixed(0);
+			} else {
+				state.aveLeaveMin = "00";
+			}
+		}
+
+		watch(
+			() => props.toAEveryDayHour,
+			(val) => {
+				computeTime();
+			},
+			{ immediate: true }
+		);
+
+		return {
+			props,
+			state,
+		};
 	},
 });
 </script>

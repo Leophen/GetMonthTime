@@ -1,7 +1,7 @@
 <template>
 	<section
 		class="day-time--container"
-		:class="{'day-time--container__today':state.ifToday}"
+		:class="{'day-time--container__today':state.ifToday,'day-time--container__tomorrow':state.ifTomorrow}"
 	>
 		<div
 			class="day-time__work-day"
@@ -58,8 +58,13 @@
 			<div class="day-time--day">
 				{{ props.day }}号
 			</div>
-			<div class="day-time--tip">
-				今天{{ props.restDay }}，不计入在内
+			<div class="day-time--tip--container">
+				<div
+					class="day-time--tip"
+					:class="{'day-time--tip__tomorrow':state.ifTomorrow}"
+				>
+					{{ props.restDay }}，不计入工时
+				</div>
 			</div>
 		</div>
 	</section>
@@ -89,20 +94,20 @@ export default defineComponent({
 			default: "",
 		},
 		comeHour: {
-			type: Number,
-			default: 9,
+			type: String,
+			default: "8",
 		},
 		comeMin: {
-			type: Number,
-			default: 0,
+			type: String,
+			default: "55",
 		},
 		leaveHour: {
-			type: Number,
-			default: 22,
+			type: String,
+			default: "22",
 		},
 		leaveMin: {
-			type: Number,
-			default: 0,
+			type: String,
+			default: "0",
 		},
 	},
 	setup(props, ctx) {
@@ -113,6 +118,7 @@ export default defineComponent({
 			time_leave_min: "00",
 			allTime: "0",
 			ifToday: false,
+			ifTomorrow: false,
 		});
 
 		function computeTime() {
@@ -142,25 +148,69 @@ export default defineComponent({
 			const today = new Date().getDate();
 			if (props.day === today) {
 				state.ifToday = true;
+			} else if (props.day > today) {
+				state.ifTomorrow = true;
 			}
 
 			if (props.restDay === "") {
 				state.time_come_hour = props.comeHour.toString();
-				if (props.comeMin === 0) {
+				if (props.comeMin === "0") {
 					state.time_come_min = "00";
 				} else {
 					state.time_come_min = props.comeMin.toString();
 				}
 				state.time_leave_hour = props.leaveHour.toString();
-				if (props.leaveMin === 0) {
+				if (props.leaveMin === "0") {
 					state.time_leave_min = "00";
 				} else {
 					state.time_leave_min = props.leaveMin.toString();
 				}
 				computeTime();
-				ctx.emit("change", props.index, state.allTime);
+				ctx.emit(
+					"change",
+					props.index,
+					state.time_come_hour,
+					state.time_come_min,
+					state.time_leave_hour,
+					state.time_leave_min,
+					state.allTime
+				);
 			}
 		});
+
+		watch(
+			() => props.leaveHour,
+			(val) => {
+				state.time_leave_hour = val;
+				computeTime();
+				ctx.emit(
+					"change",
+					props.index,
+					state.time_come_hour,
+					state.time_come_min,
+					state.time_leave_hour,
+					state.time_leave_min,
+					state.allTime
+				);
+			}
+		);
+
+		watch(
+			() => props.leaveMin,
+			(val) => {
+				state.time_leave_min = val;
+				computeTime();
+				ctx.emit(
+					"change",
+					props.index,
+					state.time_come_hour,
+					state.time_come_min,
+					state.time_leave_hour,
+					state.time_leave_min,
+					state.allTime
+				);
+			}
+		);
 
 		watch(
 			() => state.time_come_hour,
@@ -175,7 +225,15 @@ export default defineComponent({
 					state.time_come_hour = "24";
 				}
 				computeTime();
-				ctx.emit("change", props.index, state.allTime);
+				ctx.emit(
+					"change",
+					props.index,
+					state.time_come_hour,
+					state.time_come_min,
+					state.time_leave_hour,
+					state.time_leave_min,
+					state.allTime
+				);
 			}
 		);
 
@@ -192,7 +250,15 @@ export default defineComponent({
 					state.time_leave_hour = "24";
 				}
 				computeTime();
-				ctx.emit("change", props.index, state.allTime);
+				ctx.emit(
+					"change",
+					props.index,
+					state.time_come_hour,
+					state.time_come_min,
+					state.time_leave_hour,
+					state.time_leave_min,
+					state.allTime
+				);
 			}
 		);
 
@@ -212,7 +278,15 @@ export default defineComponent({
 					state.time_come_min = "59";
 				}
 				computeTime();
-				ctx.emit("change", props.index, state.allTime);
+				ctx.emit(
+					"change",
+					props.index,
+					state.time_come_hour,
+					state.time_come_min,
+					state.time_leave_hour,
+					state.time_leave_min,
+					state.allTime
+				);
 			}
 		);
 
@@ -232,7 +306,15 @@ export default defineComponent({
 					state.time_leave_min = "59";
 				}
 				computeTime();
-				ctx.emit("change", props.index, state.allTime);
+				ctx.emit(
+					"change",
+					props.index,
+					state.time_come_hour,
+					state.time_come_min,
+					state.time_leave_hour,
+					state.time_leave_min,
+					state.allTime
+				);
 			}
 		);
 
@@ -250,18 +332,13 @@ export default defineComponent({
 	width 100%
 	height 70px
 
-.day-time--container__today
-	color #ffbe21
-
-	.day-time--day, .day-time--time
-		color #ffbe21
-
 .day-time__work-day
 	width 100%
 	height 100%
 	display grid
 	grid-template-columns 1fr 1fr 1fr 1fr
 	align-items center
+	background-color #3f4045
 
 .day-time--day
 	margin-left 40px
@@ -275,8 +352,9 @@ export default defineComponent({
 .day-time--input--container
 	width 100px
 	height 40px
-	background linear-gradient(145.48deg, #EEF0F3 0%, #FFFFFF 100%)
-	box-shadow inset 10px 10px 30px #CDCDCF, inset -10px -10px 30px #FFFFFF
+	//background linear-gradient(145.48deg, #EEF0F3 0%, #FFFFFF 100%)
+	background #595b61
+	//box-shadow inset 10px 10px 30px #CDCDCF, inset -10px -10px 30px #FFFFFF
 	border-radius 20px
 	display flex
 	justify-content center
@@ -287,7 +365,8 @@ export default defineComponent({
 	font-weight bold
 	margin 0 -10px
 	margin-top -6px
-	color #595b61
+	//color #595b61
+	color #fff
 
 .day-time--input
 	width 50%
@@ -296,6 +375,8 @@ export default defineComponent({
 	border none
 	font-size 18px
 	background transparent
+	cursor default
+	color #fff
 
 	&::selection
 		background-color #BAD6FB
@@ -306,11 +387,45 @@ export default defineComponent({
 	font-weight bold
 	color #fff
 	display grid
-	grid-template-columns 1fr 2fr 0.5fr 0.5fr
+	grid-template-columns 1fr 3fr
 	align-items center
 	background-color #3f4045
 
 .day-time__rest-day__today
 	color #ffbe21
+
+.day-time--tip--container
+	width 100%
+	height 100%
+	display flex
+	align-items center
+
+.day-time--tip
+	width 90%
+	height 40px
+	border-radius 50px
+	display flex
+	justify-content center
+	align-items center
+	color rgba(255, 255, 255, 0.8)
+	background #595b61
+
+.day-time--container__today
+	color #ffbe21
+
+	.day-time--day, .day-time--time
+		color #ffbe21
+
+.day-time--container__tomorrow
+	color rgba(255, 255, 255, 0.2)
+
+	.day-time--day, .day-time--time
+		color rgba(255, 255, 255, 0.2)
+
+	.day-time--input--container
+		opacity 0.2
+
+.day-time--tip__tomorrow
+	color rgba(255, 255, 255, 0.2)
 </style>
 

@@ -37,8 +37,23 @@ export default defineComponent({
 	setup(props, ctx) {
 		return {
 			props,
-			changeData(index: any, todayTime: any) {
-				ctx.emit("change", index, todayTime);
+			changeData(
+				index: any,
+				comeHour,
+				comeMin,
+				leaveHour,
+				leaveMin,
+				todayTime: any
+			) {
+				ctx.emit(
+					"change",
+					index,
+					comeHour,
+					comeMin,
+					leaveHour,
+					leaveMin,
+					todayTime
+				);
 			},
 		};
 	},

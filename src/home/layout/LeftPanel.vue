@@ -23,13 +23,13 @@
 				class="left-panel--footer--button"
 				@mousedown="importToday"
 			>
-				录入当前签退时间
+				录入当前时间为签退
 			</div>
 			<div
 				class="left-panel--footer--button left-panel--footer--button__save"
-				@mousedown="saveCompute"
+				@mousedown="handleClear"
 			>
-				保存并计算
+				点这里有什么用呢
 			</div>
 		</footer>
 	</div>
@@ -174,21 +174,29 @@ export default defineComponent({
 
 		// 获取当前月的所有日期
 		function getNowM() {
-			const now = new Date();
-			const current_month_num = mGetDate();
-			for (let i = 1; i <= current_month_num; i++) {
-				const day = now.setDate(i);
-				const everyDayArr = formatDate(day);
-				if (everyDayArr.length === 1) {
-					dateData.push({ day: everyDayArr[0] });
-				} else {
-					dateData.push({
-						day: everyDayArr[0],
-						restDay: everyDayArr[1],
-					});
+			const worktimeArr = JSON.parse(
+				localStorage.getItem("worktime") as string
+			);
+			if (worktimeArr) {
+				worktimeArr.forEach((item) => {
+					dateData.push(item);
+				});
+			} else {
+				const now = new Date();
+				const current_month_num = mGetDate();
+				for (let i = 1; i <= current_month_num; i++) {
+					const day = now.setDate(i);
+					const everyDayArr = formatDate(day);
+					if (everyDayArr.length === 1) {
+						dateData.push({ day: everyDayArr[0] });
+					} else {
+						dateData.push({
+							day: everyDayArr[0],
+							restDay: everyDayArr[1],
+						});
+					}
 				}
 			}
-			return dateData;
 		}
 
 		onMounted(() => {
@@ -210,24 +218,36 @@ export default defineComponent({
 				ctx.root.$set(
 					dateData[currentIndex],
 					"leaveHour",
-					new Date().getHours()
+					new Date().getHours().toString()
 				);
 				ctx.root.$set(
 					dateData[currentIndex],
 					"leaveMin",
-					new Date().getMinutes()
+					new Date().getMinutes().toString()
 				);
 			}
 		}
 
-		function changeData(index: any, todayTime: any) {
+		function changeData(
+			index: any,
+			comeHour,
+			comeMin,
+			leaveHour,
+			leaveMin,
+			todayTime: any
+		) {
+			ctx.root.$set(dateData[index], "comeHour", comeHour);
+			ctx.root.$set(dateData[index], "comeMin", comeMin);
+			ctx.root.$set(dateData[index], "leaveHour", leaveHour);
+			ctx.root.$set(dateData[index], "leaveMin", leaveMin);
 			ctx.root.$set(dateData[index], "allTime", todayTime);
-		}
-
-		function saveCompute() {
 			const worktime = JSON.stringify(dateData);
 			localStorage.setItem("worktime", worktime);
-			console.log(JSON.parse(localStorage.getItem("worktime") as string));
+			ctx.emit("update");
+		}
+
+		function handleClear() {
+			alert("不知道呀");
 		}
 
 		return {
@@ -235,7 +255,7 @@ export default defineComponent({
 			dateData,
 			importToday,
 			changeData,
-			saveCompute,
+			handleClear,
 		};
 	},
 });
