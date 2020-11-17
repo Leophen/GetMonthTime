@@ -8,7 +8,7 @@
 					本月累计平均时长：<span class="right-panel--header__time">{{ props.aveTime }} 小时</span>
 				</div>
 				<div class="right-panel--header__bottom">
-					累计总时长：<span class="right-panel--header__time">{{ props.allTime.toFixed(2) }} 小时，距离 A 级还需：{{ props.toAHour.toFixed(2) }} 小时（从今天起每日平均需达到 {{ props.toAEveryDayHour.toFixed(2) }} 小时，相当于 9 点签到，{{ state.aveLeaveHour }}:{{ state.aveLeaveMin }} 点签退）</span>
+					累计总时长：<span class="right-panel--header__time">{{ props.allTime.toFixed(2) }} 小时，距离 A 级还需：{{ props.toAHour.toFixed(2) }} 小时（从今天起每日平均需达到 {{ props.toAEveryDayHour.toFixed(2) }} 小时，相当于 9 点签到，{{ state.aveLeaveHour }}:{{ state.aveLeaveMin }} 签退）</span>
 				</div>
 			</div>
 		</header>

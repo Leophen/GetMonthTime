@@ -17,7 +17,9 @@
 					class="day-time--input"
 					onfocus="this.select()"
 					v-model="state.time_come_hour"
+					@focus="inputFocus('comeHour')"
 					@blur="inputBlur"
+					ref="comeHourInput"
 				>
 				<div class="day-time--o">
 					:
@@ -27,7 +29,9 @@
 					class="day-time--input"
 					onfocus="this.select()"
 					v-model="state.time_come_min"
+					@focus="inputFocus('comeMin')"
 					@blur="inputBlur"
+					ref="comeMinInput"
 				>
 			</div>
 			<!-- 签退时间 -->
@@ -37,7 +41,9 @@
 					class="day-time--input"
 					onfocus="this.select()"
 					v-model="state.time_leave_hour"
+					@focus="inputFocus('leaveHour')"
 					@blur="inputBlur"
+					ref="leaveHourInput"
 				>
 				<div class="day-time--o">
 					:
@@ -47,7 +53,9 @@
 					class="day-time--input"
 					onfocus="this.select()"
 					v-model="state.time_leave_min"
+					@focus="inputFocus('leaveMin')"
 					@blur="inputBlur"
+					ref="leaveMinInput"
 				>
 			</div>
 			<div class="day-time--time">
@@ -80,6 +88,7 @@ import {
 	reactive,
 	onMounted,
 	watch,
+	ref,
 } from "@vue/composition-api";
 
 export default defineComponent({
@@ -124,6 +133,7 @@ export default defineComponent({
 			ifToday: false,
 			ifTomorrow: false,
 			needUpdate: false,
+			focusInput: "comeHour",
 		});
 
 		function computeTime() {
@@ -303,11 +313,35 @@ export default defineComponent({
 			state.needUpdate = false;
 		}
 
+		const comeHourInput = ref({} as unknown);
+		const comeMinInput = ref({} as unknown);
+		const leaveHourInput = ref({} as unknown);
+		const leaveMinInput = ref({} as unknown);
+		function focusKeydown(event) {
+			if (event.keyCode === 13) {
+				(comeHourInput.value as HTMLElement).blur();
+				(comeMinInput.value as HTMLElement).blur();
+				(leaveHourInput.value as HTMLElement).blur();
+				(leaveMinInput.value as HTMLElement).blur();
+				window.removeEventListener("keydown", focusKeydown);
+			}
+		}
+
+		function inputFocus(focusInput) {
+			state.focusInput = focusInput;
+			window.addEventListener("keydown", focusKeydown);
+		}
+
 		return {
 			props,
 			state,
 			computeTime,
 			inputBlur,
+			inputFocus,
+			comeHourInput,
+			comeMinInput,
+			leaveHourInput,
+			leaveMinInput,
 		};
 	},
 });

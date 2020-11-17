@@ -12,41 +12,60 @@
 				</div>
 			</div>
 		</header>
-		<el-scrollbar class="date-time__scroll">
+		<el-scrollbar
+			class="date-time__scroll"
+		>
 			<DateTime
 				:date-data="dateData"
 				@change="changeData"
+				v-if="state.ifUpdate"
 			/>
 		</el-scrollbar>
 		<footer class="left-panel--footer">
-			<div
-				class="left-panel--footer--button"
-				@mousedown="importToday"
-			>
-				录入当前时间为签退
-			</div>
+			<header class="left-panel--footer__top">
+				<div
+					class="left-panel--footer--button left-panel--footer--button__top"
+					@mousedown="openAllTimeSet"
+				>
+					统一签到签退时间
+				</div>
+				<div
+					class="left-panel--footer--button left-panel--footer--button__top"
+					@mousedown="importToday"
+				>
+					录入当前时间签退
+				</div>
+			</header>
 			<div
 				class="left-panel--footer--button left-panel--footer--button__save"
 				@mousedown="handleClear"
 			>
-				点这里有什么用呢
+				计算周六签退时间
 			</div>
 		</footer>
+		<allTimeSetDialog
+			v-model="state.allTimeSet"
+			@compute="importAllTime"
+		/>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, onMounted } from "@vue/composition-api";
 import DateTime from "../../components/DateTime.vue";
+import allTimeSetDialog from "../../components/allTimeSetDialog.vue";
 
 export default defineComponent({
 	name: "LeftPanel",
 	components: {
 		DateTime,
+		allTimeSetDialog,
 	},
 	setup(props, ctx) {
 		const state = reactive({
 			allTimeArr: [],
+			allTimeSet: false,
+			ifUpdate: true,
 		});
 
 		// 筛选日期
@@ -228,6 +247,19 @@ export default defineComponent({
 			}
 		}
 
+		function importAllTime(come_hour, come_min, leave_hour, leave_min) {
+			for (let i = 0; i < dateData.length; i++) {
+				ctx.root.$set(dateData[i], "comeHour", come_hour);
+				ctx.root.$set(dateData[i], "comeMin", come_min);
+				ctx.root.$set(dateData[i], "leaveHour", leave_hour);
+				ctx.root.$set(dateData[i], "leaveMin", leave_min);
+			}
+			state.ifUpdate = false;
+			setTimeout(() => {
+				state.ifUpdate = true;
+			}, 10);
+		}
+
 		function changeData(
 			index: any,
 			comeHour,
@@ -246,6 +278,10 @@ export default defineComponent({
 			ctx.emit("update");
 		}
 
+		function openAllTimeSet() {
+			state.allTimeSet = true;
+		}
+
 		function handleClear() {
 			alert("不知道呀");
 		}
@@ -254,7 +290,9 @@ export default defineComponent({
 			state,
 			dateData,
 			importToday,
+			importAllTime,
 			changeData,
+			openAllTimeSet,
 			handleClear,
 		};
 	},
@@ -280,7 +318,7 @@ export default defineComponent({
 .left-panel--container
 	width 525px
 	height calc(100vh)
-	border-right 2px solid #6D7278
+	border-right 2px solid #3f4045
 
 .left-panel--header
 	width 100%
@@ -290,7 +328,6 @@ export default defineComponent({
 	font-weight bold
 	display flex
 	align-items center
-	box-shadow 0 0 0 2px #6D7278
 
 .left-panel--header__inner
 	padding-left 40px
@@ -307,6 +344,12 @@ export default defineComponent({
 	justify-content center
 	align-items center
 
+.left-panel--footer__top
+	width 455px
+	display flex
+	justify-content space-between
+	align-items center
+
 .left-panel--footer--button
 	width 455px
 	height 60px
@@ -315,13 +358,16 @@ export default defineComponent({
 	justify-content center
 	align-items center
 	color #000
-	background-color #FFBE21
+	background #ffbe21
 	cursor pointer
 	font-weight bold
 
+.left-panel--footer--button__top
+	width 47%
+
 .left-panel--footer--button__save
 	color #fff
-	background-color #4C73FE
+	background #4C73FE
 	margin-top 30px
 </style>
 

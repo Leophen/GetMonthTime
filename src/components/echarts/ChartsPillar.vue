@@ -271,10 +271,11 @@ export default defineComponent({
 	width 1300px
 	height 772px
 	overflow hidden
-	background-color #595B61
-	box-shadow inset 10px 10px 30px #484A4F, inset -10px -10px 30px #484A4F
+	background-color #484a4f
+	box-shadow inset 10px 10px 30px #242528, inset -10px -10px 30px #6c6f77
 	border-radius 20px
-	border 2px solid #6D7278
+	//inset 10px 10px 30px #6c6f77, inset -10px -10px 30px #242528
+	//border 2px solid #3f4045
 
 .charts-pillar__canvas
 	width 1450px !important
