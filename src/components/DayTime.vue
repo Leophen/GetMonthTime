@@ -146,14 +146,16 @@ export default defineComponent({
 			let relaxTime = 0;
 			if (Number(state.time_leave_hour) <= 12) {
 				relaxTime = 0;
-			} else if (
-				Number(state.time_leave_hour) > 12 &&
-				Number(state.time_leave_hour) <= 18
-			) {
+			} else if (leaveTime > 12 * 60 && leaveTime <= 13 * 60 + 30) {
+				relaxTime = leaveTime - 12 * 60;
+			} else if (leaveTime > 13 * 60 + 30 && leaveTime <= 18 * 60) {
 				relaxTime = 90;
+			} else if (leaveTime > 18 * 60 && leaveTime <= 18 * 60 + 40) {
+				relaxTime = leaveTime - 18 * 60 + 90;
 			} else {
 				relaxTime = 130;
 			}
+			console.log(relaxTime);
 
 			const computedTime = (leaveTime - comeTime - relaxTime) / 60;
 			state.allTime = computedTime.toFixed(2);
@@ -395,7 +397,7 @@ export default defineComponent({
 	border none
 	font-size 18px
 	background transparent
-	cursor default
+	cursor text
 	color #fff
 
 	&::selection
