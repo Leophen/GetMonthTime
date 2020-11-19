@@ -5,60 +5,65 @@
 		<el-dialog
 			title="统一签到签退时间设置"
 			:visible.sync="state.visible"
-			width="50%"
-			top="40vh"
+			width="30%"
+			top="35vh"
 			animation="el-zoom-in-center"
 		>
 			<div class="dialog--input--container">
 				<!-- 签到时间 -->
-				<div class="dialog--input--title">
-					设置所有签到时间为
-				</div>
-				<div class="day-time--input--container">
-					<input
-						type="text"
-						class="day-time--input"
-						onfocus="this.select()"
-						v-model="state.time_come_hour"
-						@focus="inputFocus('comeHour')"
-						ref="comeHourInput"
-					>
-					<div class="day-time--o">
-						:
+				<div class="dialog--input--container__item">
+					<div class="dialog--input--title">
+						设置所有签到时间为
 					</div>
-					<input
-						type="text"
-						class="day-time--input"
-						onfocus="this.select()"
-						v-model="state.time_come_min"
-						@focus="inputFocus('comeMin')"
-						ref="comeMinInput"
-					>
+					<div class="day-time--input--container">
+						<input
+							type="text"
+							class="day-time--input"
+							onfocus="this.select()"
+							v-model="state.time_come_hour"
+							@focus="inputFocus('comeHour')"
+							ref="comeHourInput"
+						>
+						<div class="day-time--o">
+							:
+						</div>
+						<input
+							type="text"
+							class="day-time--input"
+							onfocus="this.select()"
+							v-model="state.time_come_min"
+							@focus="inputFocus('comeMin')"
+							ref="comeMinInput"
+						>
+					</div>
 				</div>
+				
 				<!-- 签退时间 -->
-				<div class="dialog--input--title">
-					设置所有签退时间为
-				</div>
-				<div class="day-time--input--container">
-					<input
-						type="text"
-						class="day-time--input"
-						onfocus="this.select()"
-						v-model="state.time_leave_hour"
-						@focus="inputFocus('leaveHour')"
-						ref="leaveHourInput"
-					>
-					<div class="day-time--o">
-						:
+				<div class="dialog--input--container__item">
+					<div class="dialog--input--title">
+						设置所有签退时间为
 					</div>
-					<input
-						type="text"
-						class="day-time--input"
-						onfocus="this.select()"
-						v-model="state.time_leave_min"
-						@focus="inputFocus('leaveMin')"
-						ref="leaveMinInput"
-					>
+					<div class="day-time--input--container">
+						<input
+							type="text"
+							class="day-time--input"
+							onfocus="this.select()"
+							v-model="state.time_leave_hour"
+							@focus="inputFocus('leaveHour')"
+							ref="leaveHourInput"
+						>
+						<div class="day-time--o">
+							:
+						</div>
+						<input
+							type="text"
+							class="day-time--input"
+							onfocus="this.select()"
+							v-model="state.time_leave_min"
+							@focus="inputFocus('leaveMin')"
+							ref="leaveMinInput"
+						>
+					</div>
 				</div>
 			</div>
 			<div
@@ -187,13 +192,13 @@ export default defineComponent({
 
 .dialog--input--container
 	display flex
-	justify-content space-between
-	align-items center
+	flex-direction column
 	margin-top 10px
 
 .dialog--input--title
 	color #fff
 	font-size 16px
+	margin-right 30px
 
 .day-time--input--container
 	width 100px
@@ -205,6 +210,12 @@ export default defineComponent({
 	display flex
 	justify-content center
 	align-items center
+	transition all 0.2s ease-out
+
+.dialog--input--container__item
+	display flex
+	align-items center
+	margin-top 10px
 
 .day-time--o
 	font-size 20px
@@ -221,7 +232,7 @@ export default defineComponent({
 	border none
 	font-size 18px
 	background transparent
-	cursor default
+	cursor text
 	color #fff
 
 	&::selection

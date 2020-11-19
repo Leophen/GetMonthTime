@@ -106,7 +106,7 @@ export default defineComponent({
 			legend: {
 				right: "10%",
 				top: "36%",
-				itemGap: 16,
+				itemGap: 30,
 				itemWidth: 18,
 				itemHeight: 10,
 				data: [
@@ -121,8 +121,7 @@ export default defineComponent({
 					color: "#fff",
 					fontStyle: "normal",
 					fontFamily: "微软雅黑",
-					fontSize: 12,
-					fontWeight: 600,
+					fontSize: 16,
 				},
 			},
 			// 鼠标悬浮效果
@@ -140,7 +139,7 @@ export default defineComponent({
 					color: "#fff",
 					fontStyle: "normal",
 					fontFamily: "微软雅黑",
-					fontSize: 12,
+					fontSize: 16,
 				},
 			},
 			// X轴
@@ -155,7 +154,7 @@ export default defineComponent({
 							color: "#fff",
 							fontStyle: "normal",
 							fontFamily: "微软雅黑",
-							fontSize: 12,
+							fontSize: 14,
 							fontWeight: 600,
 						},
 					},
@@ -186,7 +185,7 @@ export default defineComponent({
 							color: "#fff",
 							fontStyle: "normal",
 							fontFamily: "微软雅黑",
-							fontSize: 12,
+							fontSize: 14,
 							fontWeight: 600,
 						},
 					},
@@ -268,19 +267,21 @@ export default defineComponent({
 
 <style lang="stylus">
 .charts-pillar
-	width 1300px
-	height 772px
+	//width 1300px
+	width 100%
+	//height 772px
+	height calc(100vh - 165px)
 	overflow hidden
-	background-color #484a4f
+	background linear-gradient(145deg, #414347, #4d4f55)
 	box-shadow inset 10px 10px 30px #242528, inset -10px -10px 30px #6c6f77
 	border-radius 20px
 	//inset 10px 10px 30px #6c6f77, inset -10px -10px 30px #242528
 	//border 2px solid #3f4045
 
 .charts-pillar__canvas
-	width 1450px !important
-	height 1070px !important
-	margin-top -280px
-	margin-left -64px
+	width 108% !important
+	height 142% !important
+	margin-top -23%
+	margin-left -3.5%
 </style>
 

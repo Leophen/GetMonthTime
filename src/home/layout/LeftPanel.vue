@@ -47,6 +47,9 @@
 			v-model="state.allTimeSet"
 			@compute="importAllTime"
 		/>
+		<saturdayDialog
+			v-model="state.saturdayDialogVisible"
+		/>
 	</div>
 </template>
 
@@ -54,18 +57,21 @@
 import { defineComponent, reactive, onMounted } from "@vue/composition-api";
 import DateTime from "../../components/DateTime.vue";
 import allTimeSetDialog from "../../components/allTimeSetDialog.vue";
+import saturdayDialog from "../../components/saturdayDialog.vue";
 
 export default defineComponent({
 	name: "LeftPanel",
 	components: {
 		DateTime,
 		allTimeSetDialog,
+		saturdayDialog,
 	},
 	setup(props, ctx) {
 		const state = reactive({
 			allTimeArr: [],
 			allTimeSet: false,
 			ifUpdate: true,
+			saturdayDialogVisible: false,
 		});
 
 		// 筛选日期
@@ -283,7 +289,7 @@ export default defineComponent({
 		}
 
 		function handleClear() {
-			alert("不知道呀");
+			state.saturdayDialogVisible = true;
 		}
 
 		return {

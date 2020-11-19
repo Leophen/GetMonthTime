@@ -155,7 +155,6 @@ export default defineComponent({
 			} else {
 				relaxTime = 130;
 			}
-			console.log(relaxTime);
 
 			const computedTime = (leaveTime - comeTime - relaxTime) / 60;
 			state.allTime = computedTime.toFixed(2);
