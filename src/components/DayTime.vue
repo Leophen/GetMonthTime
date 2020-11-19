@@ -252,8 +252,7 @@ export default defineComponent({
 				}
 				if (Number(newVal) < 0) {
 					state.time_leave_hour = "0";
-				}
-				if (Number(newVal) > 24) {
+				} else if (Number(newVal) > 24) {
 					state.time_leave_hour = "24";
 				}
 				state.needUpdate = true;
@@ -265,14 +264,9 @@ export default defineComponent({
 			(newVal, oldVal) => {
 				if (isNaN(Number(newVal)) && oldVal) {
 					state.time_come_min = oldVal;
-				}
-				if (Number(newVal) === 0) {
+				} else if (Number(newVal) < 0) {
 					state.time_come_min = "00";
-				}
-				if (Number(newVal) < 0) {
-					state.time_come_min = "00";
-				}
-				if (Number(newVal) > 59) {
+				} else if (Number(newVal) > 59) {
 					state.time_come_min = "59";
 				}
 				state.needUpdate = true;
@@ -284,14 +278,9 @@ export default defineComponent({
 			(newVal, oldVal) => {
 				if (isNaN(Number(newVal)) && oldVal) {
 					state.time_leave_min = oldVal;
-				}
-				if (Number(newVal) === 0) {
-					state.time_come_min = "00";
-				}
-				if (Number(newVal) < 0) {
+				} else if (Number(newVal) < 0) {
 					state.time_leave_min = "00";
-				}
-				if (Number(newVal) > 59) {
+				} else if (Number(newVal) > 59) {
 					state.time_leave_min = "59";
 				}
 				state.needUpdate = true;
@@ -301,6 +290,24 @@ export default defineComponent({
 		function inputBlur() {
 			if (state.needUpdate) {
 				computeTime();
+				if (
+					Number(state.time_come_min) > 0 &&
+					Number(state.time_come_min) < 10
+				) {
+					state.time_come_min = "0" + state.time_come_min;
+				}
+				if (
+					Number(state.time_leave_min) > 0 &&
+					Number(state.time_leave_min) < 10
+				) {
+					state.time_leave_min = "0" + state.time_leave_min;
+				}
+				if (Number(state.time_come_min) === 0) {
+					state.time_come_min = "00";
+				}
+				if (Number(state.time_leave_min) === 0) {
+					state.time_leave_min = "00";
+				}
 				ctx.emit(
 					"change",
 					props.index,

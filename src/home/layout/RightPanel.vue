@@ -68,7 +68,7 @@ export default defineComponent({
 			let leaveTime = 9 + props.toAEveryDayHour;
 			if (leaveTime > 12 && leaveTime <= 18) {
 				leaveTime += 1.5;
-			} else if (leaveTime > 18 && leaveTime <= 18 + 40 / 60) {
+			} else if (leaveTime > 18) {
 				leaveTime += 1.5 + 40 / 60;
 			}
 			const leaveTimeArr = leaveTime.toString().split(".");
